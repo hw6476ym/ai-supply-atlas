@@ -46,9 +46,9 @@
     "OpenAI": "openai", "Anthropic": "anthropic", "Alphabet / Google": "google", "Google DeepMind": "google", "Google": "google", "Google Cloud": "google", "Alphabet": "google",
     "Meta": "meta", "SpaceX / SpaceXAI / Tesla": "xai", "SpaceXAI": "xai", "Tesla": "tesla", "Microsoft": "microsoft", "Microsoft AI": "microsoft",
     "Amazon": "amazon", "AWS": "amazon", "Apple": "apple", "Nvidia": "nvidia", "AMD": "amd", "Broadcom": "broadcom", "Cerebras": "cerebras",
-    "Oracle": "oracle", "CoreWeave": "coreweave", "SoftBank": "s_milam", "Mistral AI": "mistral", "Thinking Machines Lab": "tml", "Safe Superintelligence": "ssi",
+    "Oracle": "oracle", "CoreWeave": "coreweave", "SoftBank": "s_milam", "Mistral AI": "mistral", "Thinking Machines Lab": "tml", "Safe Superintelligence": "ssi", "ByteDance": "bytedance", "Moonshot AI": "moonshot", "Zhipu AI": "zhipu", "Baidu": "baidu", "Nebius": "nebius", "Crusoe": "crusoe", "G42 / MGX": "g42", "Perplexity": "perplexity", "Anysphere (Cursor)": "anysphere", "Figure AI": "figure", "Arm": "softbank",
     "DeepSeek": "deepseek", "Alibaba": "alibaba", "Alibaba Cloud": "alibaba", "Huawei": "huawei", "TSMC": "f_tsmc18", "SK hynix": "f_hynix_m15x", "SK Group": "f_hynix_m15x",
-    "Samsung Electronics": "f_samsung_p", "Micron": "f_micron", "ASML": "f_asml", "Intel": null
+    "Samsung Electronics": "f_samsung_p", "Micron": "f_micron", "ASML": "f_asml", "Intel": "intel"
   };
   AI.people.forEach((p) => { p.node = orgNode[p.org] || null; });
   C.peopleFor = function (id) {
@@ -85,6 +85,13 @@
       return [s, r];
     }).filter(Boolean).sort((a, b) => b[0] - a[0]).slice(0, 14).map((x) => x[1]);
   };
+
+  C.exportData = () => ({
+    generated: "2026-10", license: "MIT", tiers: AI.tiers,
+    nodes: AI.N.map(({ x, y, vx, vy, index, fx, fy, _k, _y0, ...d }) => d),
+    links: AI.L.map((e) => ({ source: typeof e.source === "object" ? e.source.id : e.source, target: typeof e.target === "object" ? e.target.id : e.target })),
+    people: AI.people, teardowns: AI.teardowns, specs: AI.specs, money: AI.money, elementUse: AI.elementUse
+  });
 
   /* small UI helpers */
   C.toast = function (msg) { const t = document.getElementById("toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(C._tt); C._tt = setTimeout(() => t.classList.remove("on"), 1800); };

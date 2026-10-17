@@ -125,4 +125,18 @@
   p("mehrotra", "Sanjay Mehrotra", "Micron", "CEO", "fab", "Co-founded SanDisk.", "HBM share and new US memory fabs in Idaho and New York.", w("Sanjay_Mehrotra"));
   p("fouquet", "Christophe Fouquet", "ASML", "CEO", "fab", "Ran ASML's EUV business before becoming CEO in 2024.", "High-NA EUV adoption, China export rules, Mistral investment.", null);
   p("van_den_brink", "Martin van den Brink", "ASML", "Former President & CTO (retired 2024)", "fab", "Spent 40 years at ASML; drove EUV from experiment to production.", "Advisor; architect of the machine every AI chip depends on.", w("Martin_van_den_Brink"));
+  /* ---------- Expansion: China labs, neoclouds, apps, robotics, Arm */
+  p("liang_rubo", "Liang Rubo", "ByteDance", "CEO", "china", "ByteDance co-founder; CEO since 2021.", "Doubao and the Seed research team; China's largest AI capex.", null);
+  p("wu_yonghui", "Wu Yonghui", "ByteDance", "Head of Seed (foundation models)", "china", "Former Google Fellow who worked on Google's neural machine translation and Gemini.", "Leads ByteDance's frontier model research since 2025.", null);
+  p("yang_zhilin", "Yang Zhilin", "Moonshot AI", "Founder & CEO", "china", "CMU PhD; co-author of Transformer-XL and XLNet.", "Kimi K-series open MoE models.", null);
+  p("zhang_peng", "Zhang Peng", "Zhipu AI", "CEO", "china", "Tsinghua-trained computer scientist.", "GLM models and Zhipu's public listing.", null);
+  p("robin_li", "Robin Li", "Baidu", "Co-founder & CEO", "china", "Built Baidu search in 2000.", "ERNIE, Kunlun chips and Apollo Go robotaxis.", w("Robin_Li"));
+  p("volozh", "Arkady Volozh", "Nebius", "Founder & CEO", "cloud", "Co-founded Yandex.", "Building Nebius into a global neocloud.", w("Arkady_Volozh"));
+  p("lochmiller", "Chase Lochmiller", "Crusoe", "Co-founder & CEO", "infra", "Former quant trader and climber.", "Builds Stargate Abilene and other gigawatt campuses.", null);
+  p("tahnoon", "Sheikh Tahnoon bin Zayed", "G42 / MGX", "Chairman", "infra", "UAE national security adviser; chairs ADIA, G42 and MGX.", "UAE's 5 GW AI campus and global AI investments.", w("Tahnoun_bin_Zayed_Al_Nahyan"));
+  p("srinivas", "Aravind Srinivas", "Perplexity", "Co-founder & CEO", "app", "Former OpenAI and DeepMind research intern; Berkeley PhD.", "Perplexity answer engine and the Comet browser.", w("Aravind_Srinivas"));
+  p("truell", "Michael Truell", "Anysphere (Cursor)", "Co-founder & CEO", "app", "MIT graduate who co-founded Anysphere in 2022.", "Cursor editor and its in-house coding models.", null);
+  p("adcock", "Brett Adcock", "Figure AI", "Founder & CEO", "device", "Founded Vettery and Archer Aviation.", "Figure 03 humanoid and the Helix model.", null);
+  p("shazeer", "Noam Shazeer", "Google DeepMind", "Gemini co-lead", "lab", "Co-author of 'Attention Is All You Need' and of mixture-of-experts layers; founded Character.AI.", "Co-leads Gemini model development since returning to Google in 2024.", w("Noam_Shazeer"));
+  p("haas", "Rene Haas", "Arm", "CEO", "chip", "Former Nvidia executive.", "Arm cores inside Grace, Vera, Graviton, Axion and Cobalt; Arm's own server chips.", w("Rene_Haas"));
 })(window.AI);

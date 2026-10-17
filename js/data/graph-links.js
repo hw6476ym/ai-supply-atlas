@@ -114,7 +114,7 @@
   f("c_nvswitch", ["m_cables"]);
   f("c_apple_silicon", ["m_neural_engine", "m_n2die"]);
   f("c_ar1", ["m_neural_engine"]);
-  f("c_ai5", ["m_neural_engine"]);
+
   l("p_optimus", "m_actuators");
   l("p_rayban", "m_display_glass");
   l("p_rayban", "c_ar1");

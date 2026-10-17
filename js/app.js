@@ -26,7 +26,7 @@
     setTimeout(() => (silent = false), 0);
   };
 
-  const titles = { home: "", map: "Supply map", teardowns: "Teardowns", teardown: "Teardown", people: "People", money: "Money", atoms: "Atoms", world: "World", more: "More", about: "About" };
+  const titles = { home: "", map: "Supply map", teardowns: "Teardowns", teardown: "Teardown", people: "People", money: "Money", atoms: "Atoms", world: "World", more: "More", about: "About", specs: "Accelerator spec sheet", models: "Frontier models", roadmaps: "Roadmaps", glossary: "Glossary", sites: "Compute sites", companies: "AI companies", company: "Company", chokepoints: "Chokepoints", compute: "Compute calculator" };
 
   function render() {
     if (silent) return;
@@ -36,20 +36,21 @@
     if (sameView && route === "teardown" && params.s) { scrollToSection(params.s); return; }
     current = { route, arg, params };
     document.body.dataset.route = route;
-    const tab = route === "teardown" ? "teardowns" : route;
+    const tab = route === "teardown" ? "teardowns" : route === "company" ? "companies" : ["models", "roadmaps", "glossary"].includes(route) ? "specs" : route;
     C.$$("[data-tab]").forEach((a) => a.toggleAttribute("aria-current", a.dataset.tab === tab || (tab === "home" && a.dataset.tab === "home")));
     C.$$("[data-tab]").forEach((a) => { if (a.hasAttribute("aria-current")) a.setAttribute("aria-current", "page"); });
-    if (["money", "atoms", "world", "about"].includes(route)) C.$$('.bottom-tabs [data-tab="more"]').forEach((a) => a.setAttribute("aria-current", "page"));
+    if (["money", "atoms", "world", "about", "specs", "models", "roadmaps", "glossary", "sites", "companies", "company", "chokepoints", "compute"].includes(route)) C.$$('.bottom-tabs [data-tab="more"]').forEach((a) => a.setAttribute("aria-current", "page"));
     try {
       if (route === "map") AI.renderMap(main, params);
       else if (route === "teardown") AI.views.teardown(main, arg);
+      else if (route === "company") AI.views.company(main, arg);
       else if (AI.views[route]) AI.views[route](main, params);
       else AI.views.home(main);
     } catch (err) {
       console.error(err);
       main.innerHTML = `<div class="wrap"><div class="empty" style="margin-top:40px">This page hit an error: ${C.esc(err.message)}. <a href="#/">Go home</a>.</div></div>`;
     }
-    const t = route === "teardown" && C.teardown(arg) ? C.teardown(arg).name : titles[route];
+    const t = route === "teardown" && C.teardown(arg) ? C.teardown(arg).name : route === "company" && AI.idx[arg] ? AI.idx[arg].label : titles[route];
     document.title = (t ? t + " — " : "") + "Atoms to Intelligence";
     if (route !== "map") window.scrollTo(0, 0);
     if (route === "teardown" && params.s) setTimeout(() => scrollToSection(params.s), 50);
@@ -85,7 +86,7 @@
   const root = document.documentElement;
   try { const t = localStorage.getItem("a2i-theme"); if (t) root.dataset.theme = t; } catch (e) {}
   document.getElementById("themeBtn").onclick = () => {
-    const dark = root.dataset.theme ? root.dataset.theme === "dark" : !matchMedia("(prefers-color-scheme: light)").matches;
+    const dark = root.dataset.theme !== "light";
     root.dataset.theme = dark ? "light" : "dark";
     try { localStorage.setItem("a2i-theme", root.dataset.theme); } catch (e) {}
     if (current.route === "map" || current.route === "money" || current.route === "world") { current.route = null; render(); }

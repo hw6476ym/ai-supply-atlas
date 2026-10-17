@@ -67,6 +67,7 @@
     </div>`;
   };
 
+  V.tdCard = tdCard;
   function tdCard(t) {
     const tiersHit = [...new Set(t.ladder.map((r) => (r.node ? AI.idx[r.node].tier : null)).filter(Boolean))].sort();
     return `<a class="td-card" href="#/teardown/${t.id}"><span class="kind">${esc(t.kind)} · ${esc(t.maker)}</span><h3>${esc(t.name)}</h3><span class="muted">${esc(t.tagline)}</span>
@@ -282,29 +283,36 @@
 
   /* ================================================================ MORE (mobile menu) & ABOUT */
   V.more = function (main) {
-    main.innerHTML = `<div class="wrap"><section class="hero" style="padding-bottom:0"><h1>More</h1></section><div class="more-list">
-      <a class="tour" href="#/money"><h3>Money</h3><span class="path">Capex, valuations and the deals between labs, clouds and chipmakers</span></a>
-      <a class="tour" href="#/atoms"><h3>Atoms</h3><span class="path">The periodic table of AI hardware</span></a>
-      <a class="tour" href="#/world"><h3>World map</h3><span class="path">Where every site, fab and mine is</span></a>
-      <a class="tour" href="#/about"><h3>About & sources</h3><span class="path">How this was built and how to check it</span></a></div>${V.footer()}</div>`;
+    const items = [["#/companies", "Company dossiers", "Everything each AI company depends on, its chips, leaders and deals"], ["#/specs", "Accelerator spec sheet", "HBM, bandwidth, FP8/FP4, power and scale-up for every AI chip"],
+      ["#/models", "Frontier models", "Who shipped what, open or closed"], ["#/sites", "Compute sites", "Gigawatts planned and online"], ["#/chokepoints", "Chokepoints & what-if", "Knock out a supplier, see who's hit"],
+      ["#/compute", "Compute calculator", "Params × tokens → days, MWh and dollars"], ["#/roadmaps", "Roadmaps", "Nvidia, HBM and process-node timelines"], ["#/money", "Money", "Capex, valuations and deals"],
+      ["#/atoms", "Atoms", "The periodic table of AI hardware"], ["#/world", "World map", "Where every site, fab and mine is"], ["#/glossary", "Glossary", "From KV cache to backside power"], ["#/about", "About & data", "Sources, method and data download"]];
+    main.innerHTML = `<div class="wrap"><section class="hero" style="padding-bottom:0"><h1>More</h1></section><div class="more-list">${items.map(([h, t, d]) => `<a class="tour" href="${h}"><h3>${t}</h3><span class="path">${d}</span></a>`).join("")}</div>${V.footer()}</div>`;
   };
 
   V.about = function (main) {
     main.innerHTML = `<div class="wrap"><section class="hero"><h1>About this atlas</h1>
       <div class="prose"><p class="lede">An AI-focused companion to the Global Supply Chain Explorer. Instead of the top 100 companies, it follows only the companies building AI, and goes further down: past the factory and the mine to the atoms, and sideways to the people and the money.</p>
       <h3 style="margin:24px 0 8px">What's in it</h3>
-      <p>${AI.N.length} named entities in 8 layers with ${AI.L.length} dependency links, ${AI.teardowns.length} product teardowns, ${AI.people.length} people, ${AI.money.deals.length} major deals, and ${Object.keys(AI.elementUse).length} elements.</p>
+      <p>${AI.N.length} named entities in 8 layers with ${AI.L.length} dependency links, ${AI.N.filter((d) => d.tier === 1).length} AI company dossiers, ${AI.teardowns.length} teardowns, ${AI.specs.accel.length} accelerators and ${AI.specs.models.length} model families on the spec sheets, ${AI.people.length} people, ${AI.money.deals.length} major deals, ${AI.specs.glossary.length} glossary terms, and ${Object.keys(AI.elementUse).length} elements.</p>
       <h3 style="margin:24px 0 8px">How to read the figures</h3>
       <p>Figures come from company announcements, filings and press reporting through October 2026 (Bloomberg, Reuters, FT, The Information, Epoch AI, TrendForce, Counterpoint, USGS). Many deal sizes are multi-year or contingent. Producer shares are rounded. Where reports conflicted, the more conservative figure is used. This is a map for understanding, not for investing or procurement.</p>
       <h3 style="margin:24px 0 8px">Ideas for what to add next</h3>
       <ul class="improve">
-        <li>A “what if” mode: knock out a node (say, Taiwan or gallium) and see which AI products lose supply.</li>
-        <li>A timeline slider to watch the build-out from 2022 to 2028.</li>
+                <li>A timeline slider to watch the build-out from 2022 to 2028.</li>
         <li>Energy per answer: rough watt-hours from the prompt back to the power plant.</li>
         <li>Open the data as JSON so others can extend and correct it.</li>
         <li>Per-node “last verified” dates and a corrections form.</li>
       </ul>
+      <h3 style="margin:24px 0 8px">Use the data</h3>
+      <p>Everything on this site is open under the MIT licence. Download it as one JSON file with nodes, links, people, teardowns, specs, money and elements, or browse the source files in <code>js/data/</code> on GitHub.</p>
+      <p><button class="btn primary" id="dlJson">Download atlas.json</button> <a class="btn" href="data/atlas.json">Open data/atlas.json</a></p>
       <h3 style="margin:24px 0 8px">Built with</h3><p>Plain HTML, CSS and JavaScript with D3.js. No build step, no tracking. Hosted on GitHub Pages.</p></div></section>${V.footer()}</div>`;
+    document.getElementById("dlJson").onclick = () => {
+      const data = AI.core.exportData();
+      const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 1)], { type: "application/json" }));
+      const a = document.createElement("a"); a.href = url; a.download = "atlas.json"; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 2000);
+    };
   };
 
   V.footer = () => `<footer class="foot">Atoms to Intelligence · status as of October 2026 · <a href="#/about">About & sources</a> · Companion to the <a href="https://hw6476ym.github.io/top100companies_supplychainFull/" target="_blank" rel="noopener">Global Supply Chain Explorer</a></footer>`;

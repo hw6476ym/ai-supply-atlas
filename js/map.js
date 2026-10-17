@@ -60,6 +60,10 @@
             <div id="tierLegend"></div>
           </div>
           <div class="rail-group">
+            <h4>AI companies</h4>
+            <div class="co-list" id="coList">${Object.entries(AI.sectors).map(([k, v]) => { const arr = companies.filter((c) => c.sector === k); return arr.length ? `<div class="co-group">${esc(v.name)}</div>` + arr.map((c) => `<button data-co="${c.id}"><span class="sw"></span>${esc(c.label)}<span class="n">${C.walk(c.id, "out").size - 1}</span></button>`).join("") : ""; }).join("")}</div>
+          </div>
+          <div class="rail-group">
             <h4>How to read this</h4>
             <p class="muted" style="font-size:.88rem">Each column is one layer of the AI stack. Lines point from a thing to what it depends on. Click any dot to light up its full chain, from the company that uses it to the mine that feeds it.</p>
           </div>
@@ -88,13 +92,13 @@
     Object.entries(AI.tiers).forEach(([t, v]) => {
       const x = (t - 4.5) * TIER_GAP;
       g.append("rect").attr("class", "tier-band").attr("x", x - 95).attr("y", y0).attr("width", 190).attr("height", y1 - y0).attr("rx", 14);
-      g.append("text").attr("class", "tier-label").attr("x", x).attr("y", y0 + 26).text(v.name).style("fill", C.tierVar(t));
+      g.append("text").attr("class", "tier-label").attr("x", x).attr("y", y0 + 26).text(`Tier ${t} · ${v.name}`).style("fill", C.tierVar(t));
     });
 
     const link = g.append("g").selectAll("path").data(AI.L).join("path").attr("class", "link")
       .attr("d", (e) => { const s = AI.idx[e.source], t = AI.idx[e.target]; const mx = (s.x + t.x) / 2; return `M${s.x},${s.y}C${mx},${s.y} ${mx},${t.y} ${t.x},${t.y}`; });
 
-    const node = g.append("g").selectAll("g").data(AI.N).join("g").attr("class", "node")
+    const node = g.append("g").selectAll("g").data(AI.N).join("g").attr("class", (d) => "node" + (C.isChoke(d) ? " choke" : ""))
       .attr("transform", (d) => `translate(${d.x},${d.y})`).attr("tabindex", 0).attr("role", "button")
       .attr("aria-label", (d) => d.label + ", " + AI.tiers[d.tier].name);
     node.append("circle").attr("r", (d) => R[d.tier]).style("fill", (d) => C.tierVar(d.tier));
@@ -155,6 +159,7 @@
     const near = (id) => new Set([id, ...C.adj[id].in, ...C.adj[id].out]);
     function select(id, push) {
       selected = id; applyView(); renderDetail(id);
+      C.$$("#coList button").forEach((b) => b.classList.toggle("active", b.dataset.co === id));
       fit(narrow() ? near(id) : C.chain(id));
       if (push) AI.app.setParams({ n: id, co: company || null, choke: chokeOnly ? "1" : null });
       document.getElementById("detail").classList.add("open");
@@ -201,6 +206,7 @@
         <p class="d-desc">${esc(d.desc || "")}</p>
         <dl class="kv">${d.owner ? `<dt>Owner</dt><dd>${esc(d.owner)}</dd>` : ""}${d.cap ? `<dt>Scale</dt><dd>${esc(d.cap)}</dd>` : ""}</dl>
         ${d.noAlt ? `<div class="choke"><strong>🔒 Why this is a chokepoint</strong>${esc(d.noAlt)}${d.workaround ? `<div class="wa"><b>How the world routes around it:</b> ${esc(d.workaround)}</div>` : ""}</div>` : ""}
+        ${d.tier === 1 ? `<div class="d-section"><a class="btn primary" href="#/company/${d.id}">Open the ${esc(d.label)} dossier</a></div>` : ""}
         ${tds.length ? `<div class="d-section"><h4>See how it's made, down to atoms</h4>${tds.map((t) => `<a class="btn primary" style="margin:0 6px 6px 0" href="#/teardown/${t.id}">${esc(t.name)} teardown</a>`).join("")}</div>` : ""}
         ${down.length > 1 ? `<div class="d-section"><h4>One path down to the ground</h4><div class="chainline">${down.map((x, i) => (i ? " → " : "") + `<b>${esc(AI.idx[x].label)}</b>`).join("")}</div></div>` : ""}
         ${up.length > 1 ? `<div class="d-section"><h4>One path up to a user</h4><div class="chainline">${up.map((x, i) => (i ? " ← " : "") + `<b>${esc(AI.idx[x].label)}</b>`).join("")}</div></div>` : ""}
@@ -219,6 +225,7 @@
     document.getElementById("coSel").onchange = (e) => { company = e.target.value; selected = null; applyView(); renderEmpty(); fit(); AI.app.setParams({ n: null, co: company || null, choke: chokeOnly ? "1" : null }); };
     document.getElementById("chokeOnly").onchange = (e) => { chokeOnly = e.target.checked; applyView(); AI.app.setParams({ choke: chokeOnly ? "1" : null }); };
     document.getElementById("labelsAll").onchange = applyView;
+    C.$$("#coList button").forEach((b) => (b.onclick = () => select(b.dataset.co, true)));
     document.getElementById("fitBtn").onclick = () => fit(selected ? C.chain(selected) : null);
     document.getElementById("clearBtn").onclick = () => clear(true);
     document.getElementById("shareBtn").onclick = C.copyLink;
