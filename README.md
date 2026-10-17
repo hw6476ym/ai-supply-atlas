@@ -60,7 +60,7 @@ works without third-party CDNs (only the Archivo web font loads from Google Font
 
 ```
 index.html            app shell
-css/style.css         "yellow room" theme (light + dark)
+css/style.css         "night fab" theme (dark default, light toggle)
 js/data/graph-*.js    the supply graph: nodes by tier, then links (graph-d = expansion + site GW)
 js/data/specs.js      accelerators, models, roadmaps, glossary
 js/data/teardowns-*.js zoom ladders, how it works, how it's made
@@ -81,7 +81,7 @@ To add a node, call `n(id, label, tier, {...})` in a `graph-*.js` file and link 
 
 - Timeline slider from 2022 to 2028.
 - Energy per answer, traced back to the power plant.
-- JSON export and a corrections form with per-node "last verified" dates.
+- A corrections form with per-node "last verified" dates.
 
 ## License
 
