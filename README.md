@@ -2,7 +2,7 @@
 
 **The AI supply chain, from the chatbot down to the chip, the factory, the mine and the atom.**
 
-[**▶ Open the live site**](https://hw6476ym.github.io/ai-atoms-to-intelligence/)
+[**▶ Open the live site**](https://hw6476ym.github.io/ai-supply-atlas/)
 
 An AI-only companion to the [Global Supply Chain Explorer](https://hw6476ym.github.io/top100companies_supplychainFull/).
 Instead of the top 100 companies, it follows only the companies building AI, and goes further:
@@ -48,8 +48,8 @@ Each teardown and the Money page link to their sources.
 ## Run locally
 
 ```bash
-git clone https://github.com/hw6476ym/ai-atoms-to-intelligence.git
-cd ai-atoms-to-intelligence
+git clone https://github.com/hw6476ym/ai-supply-atlas.git
+cd ai-supply-atlas
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
 
