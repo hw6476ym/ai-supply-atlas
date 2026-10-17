@@ -2,6 +2,8 @@
 
 **The AI supply chain, from the chatbot down to the chip, the factory, the mine and the atom.**
 
+[**▶ Open the live site**](https://bidurkaphle-pixel.github.io/ai-atoms-to-intelligence/)
+
 An AI-only companion to the [Global Supply Chain Explorer](https://hw6476ym.github.io/top100companies_supplychainFull/).
 Instead of the top 100 companies, it follows only the companies building AI, and goes further:
 past the mine to the elements, and sideways to the people who lead each layer and the money that pays for it.
@@ -35,7 +37,7 @@ Each teardown and the Money page link to their sources.
 ## Run locally
 
 ```bash
-git clone https://github.com/<you>/ai-atoms-to-intelligence.git
+git clone https://github.com/bidurkaphle-pixel/ai-atoms-to-intelligence.git
 cd ai-atoms-to-intelligence
 python3 -m http.server 8000   # then open http://localhost:8000
 ```
